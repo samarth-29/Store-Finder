@@ -18,6 +18,10 @@ https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-re
 
 
 Node geocoder: it will take any format of addresses and then return back the city, state, latitude, longitude,etc.
-To install geocoder run the following command:
+
+Install all the dependencies using npm install
+
+go to console.developers.google.com/apis
+create credential for geocoder map api, you will need your API_KEY in your code.
 
 
