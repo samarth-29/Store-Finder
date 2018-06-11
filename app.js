@@ -99,6 +99,12 @@ app.post('/store/search', (req, res, next) => {
   });
 });
 
+// Delete Store
+app.delete('/store/delete/:id', (req, res, next) => {
+  client.del(req.params.id);
+  res.redirect('/');
+});
+
 app.listen(port, () => {
   console.log('Server started on port '+port);
 });
