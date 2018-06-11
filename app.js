@@ -6,6 +6,13 @@ const bodyParser = require('body-parser');
 const NodeGeocoder = require('node-geocoder');
 const redis = require('redis');
 
+// Create Redis client
+const client = redis.createClient();
+
+client.on('connect', () => {
+  console.log('Redis Server Connected...');
+});
+
 // Set port
 const port = 3000
 
@@ -55,8 +62,18 @@ app.post('/store/add', (req, res, next) => {
 
   geocoder.geocode(location)
     .then((response) => {
-      console.log(response);
-      return;
+      const store = {};
+      store.lat = response[0].latitude;
+      store.lng = response[0].longitude;
+      store.address = response[0].formattedAddress;
+
+      client.hmset(id, ['lat', store.lat, 'lng', store.lng, 'address', store.address], (err, reply) => {
+        if(err){
+          console.log(err);
+        }
+        console.log(reply);
+        res.redirect('/');
+      });
     })
     .catch((err) => {
       console.log(err);
