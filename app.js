@@ -45,17 +45,17 @@ const options = {
 
 const geocoder = NodeGeocoder(options);
 
-// Search Store
+// Search Store Page
 app.get('/', (req, res, next) => {
   res.render('searchstore');
 });
 
-// Add Store
+// Add Store Page
 app.get('/addstore', (req, res, next) => {
   res.render('addstore');
 });
 
-// Form Submit
+// Add Store
 app.post('/store/add', (req, res, next) => {
   const id = req.body.id;
   const location = req.body.location;
@@ -79,6 +79,24 @@ app.post('/store/add', (req, res, next) => {
       console.log(err);
       return;
     });
+});
+
+// Search Store
+app.post('/store/search', (req, res, next) => {
+  const id = req.body.id;
+
+  client.hgetall(id, (err, obj) => {
+    if(!obj){
+      res.render('searchstore', {
+        error: 'Invalid Store ID'
+      });
+    } else {
+      obj.id = id;
+      res.render('details', {
+        store: obj
+      });
+    }
+  });
 });
 
 app.listen(port, () => {
